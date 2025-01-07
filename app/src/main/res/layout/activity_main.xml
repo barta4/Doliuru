@@ -11,9 +11,57 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:visibility="gone" /> <!-- Ocultado mientras se visualiza el mapa -->
 
-    <!-- Textos existentes -->
+    <!-- Indicador de carga del mapa -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <!-- Mensaje de indicaciones -->
+    <TextView
+        android:id="@+id/textMapInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/url_of_instance"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="Haz clic en el mapa para ver las coordenadas de tu ubicación"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        tools:ignore="TextContrastCheck" />
+
+    <!-- Fragmento del mapa -->
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@+id/textMapInstructions"
+        android:layout_marginTop="16dp"
+        android:contentDescription="Mapa para seleccionar ubicación" />
+
+    <!-- Botón para copiar coordenadas -->
+    <Button
+        android:id="@+id/button_copy_coordinates"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_below="@id/map"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Copiar Coordenadas"
+        android:background="#FF6200EE"
+        android:textColor="#FFFFFF"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:elevation="4dp"
+        android:contentDescription="Botón para copiar coordenadas GPS" />
+
+    <!-- TextView existente -->
     <TextView
         android:id="@+id/textAboutAndroidClient"
         android:layout_width="wrap_content"
@@ -24,7 +72,6 @@
         android:text="@string/dolibarr_for_android"
         android:textColor="@color/grey"
         android:textSize="12sp"
-        tools:context=".MainActivity"
         tools:ignore="TextContrastCheck" />
 
     <TextView
@@ -66,6 +113,7 @@
         android:minWidth="120dip"
         android:text="@string/open"
         android:textColor="#FFFFFF"
+        android:contentDescription="Botón para abrir la URL seleccionada"
         tools:ignore="TextContrastCheck" />
 
     <TextView
@@ -104,28 +152,5 @@
 
         <requestFocus />
     </EditText>
-
-    <!-- Fragmento del mapa -->
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_below="@+id/buttonStart"
-        android:layout_marginTop="16dp" />
-
-    <!-- Botón para copiar coordenadas -->
-    <Button
-        android:id="@+id/button_copy_coordinates"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_below="@id/map"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="Copiar Coordenadas"
-        android:background="#FF6200EE"
-        android:textColor="#FFFFFF"
-        android:padding="10dp"
-        android:elevation="4dp" />
 
 </RelativeLayout>
