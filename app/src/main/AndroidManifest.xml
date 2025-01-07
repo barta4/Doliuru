@@ -33,8 +33,11 @@
 
         <!-- Because we need apache HTTP client for download -->
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
-
-        <activity
+        <!-- Clave API de Google Maps -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="TU_CLAVE_API_DE_GOOGLE_MAPS" />
+     <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/title_activity_main"
