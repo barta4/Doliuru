@@ -5,6 +5,7 @@
     android:theme="@style/DoliDroidThemeFirst"
     tools:context=".MainActivity">
 
+    <!-- WebView existente -->
     <WebView
         android:id="@+id/webViewContent"
         android:layout_width="match_parent"
@@ -12,6 +13,7 @@
         android:background="@color/white"
         android:textColor="@color/black" />
 
+    <!-- Textos existentes -->
     <TextView
         android:id="@+id/textAboutAndroidClient"
         android:layout_width="wrap_content"
@@ -41,6 +43,7 @@
         android:textSize="12sp"
         tools:ignore="TextContrastCheck" />
 
+    <!-- Spinner existente -->
     <Spinner
         android:id="@+id/combo_list_of_urls"
         style="@android:style/Widget.Material.Spinner.Underlined"
@@ -51,6 +54,7 @@
         android:layout_marginRight="10dp"
         android:spinnerMode="dialog" />
 
+    <!-- Botón existente -->
     <Button
         android:id="@+id/buttonStart"
         android:layout_width="wrap_content"
@@ -77,6 +81,7 @@
         android:textSize="16sp"
         tools:ignore="TextContrastCheck" />
 
+    <!-- Campo de URL existente -->
     <EditText
         android:id="@+id/url_of_instance"
         style="@android:style/Widget.Holo.AutoCompleteTextView"
@@ -100,5 +105,27 @@
         <requestFocus />
     </EditText>
 
+    <!-- Fragmento del mapa -->
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@+id/buttonStart"
+        android:layout_marginTop="16dp" />
+
+    <!-- Botón para copiar coordenadas -->
+    <Button
+        android:id="@+id/button_copy_coordinates"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_below="@id/map"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Copiar Coordenadas"
+        android:background="#FF6200EE"
+        android:textColor="#FFFFFF"
+        android:padding="10dp"
+        android:elevation="4dp" />
 
 </RelativeLayout>
