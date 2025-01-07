@@ -1,36 +1,16 @@
 package com.nltechno.dolidroidpro;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-
-import com.nltechno.utils.Utils;
-
 import android.Manifest;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.Point;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationClient;
+    private ProgressBar progressBar;
     private LatLng currentLocation;
 
     @Override
@@ -62,15 +43,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Inicializar el mapa
+        // Inicializar los elementos de la interfaz
+        progressBar = findViewById(R.id.progressBar);
+        TextView textInstructions = findViewById(R.id.textMapInstructions);
+        Button buttonCopyCoordinates = findViewById(R.id.button_copy_coordinates);
+
+        // Inicializar el fragmento del mapa
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         if (mapFragment != null) {
+            progressBar.setVisibility(View.VISIBLE);  // Mostrar el indicador de carga
             mapFragment.getMapAsync(new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(GoogleMap googleMap) {
                     mMap = googleMap;
-                    requestLocationPermission();  // Solicitar permisos de ubicación al cargar el mapa
+                    progressBar.setVisibility(View.GONE);  // Ocultar el indicador de carga cuando el mapa esté listo
+                    requestLocationPermission();  // Solicitar permisos de ubicación
                 }
             });
         }
@@ -79,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         // Configurar el botón para copiar coordenadas
-        Button buttonCopyCoordinates = findViewById(R.id.button_copy_coordinates);
         buttonCopyCoordinates.setOnClickListener(v -> {
             if (currentLocation != null) {
                 copyToClipboard(currentLocation);
@@ -87,9 +74,19 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Ubicación no disponible", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // Configurar clic en el mapa para mostrar coordenadas
+        if (mMap != null) {
+            mMap.setOnMapClickListener(latLng -> {
+                currentLocation = latLng;
+                mMap.clear();
+                mMap.addMarker(new MarkerOptions().position(latLng).title("Ubicación seleccionada"));
+                Toast.makeText(this, "Coordenadas: " + latLng.latitude + ", " + latLng.longitude, Toast.LENGTH_SHORT).show();
+            });
+        }
     }
 
-    // Método para solicitar permisos de ubicación
+    // Solicitar permisos de ubicación
     private void requestLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -111,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             if (location != null) {
                 currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(currentLocation).title("Mi ubicación"));
+                mMap.addMarker(new MarkerOptions().position(currentLocation).title("Mi ubicación actual"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
             } else {
                 Toast.makeText(this, "No se pudo obtener la ubicación", Toast.LENGTH_SHORT).show();
